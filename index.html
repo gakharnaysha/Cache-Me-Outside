@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cache Me Outside - Financial Garden</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      transition: background-color 0.5s ease;
+    }
+    .pixel-text {
+      font-family: 'Press Start 2P', cursive;
+    }
+    .sky-sunny { background-color: #a8d8ff; }
+    .sky-rainy { background-color: #7a9cb3; }
+    .sky-storm { background-color: #4a5a6b; }
+    .sky-heatwave { background-color: #ffd6a8; }
+    
+    /* Debt Mode */
+    body.debt-mode {
+      background-color: #7a1a1a !important;
+    }
+    .debt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+    }
+    body.debt-mode .debt-overlay {
+      display: block;
+      animation: pulse-debt 2s infinite;
+    }
+    @keyframes pulse-debt {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    .ground-texture {
+      background-color: #8b7d2f;
+      background-image: radial-gradient(#9b8d3f 20%, transparent 20%),
+                        radial-gradient(#7b6d1f 20%, transparent 20%);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+      transition: filter 0.5s;
+    }
+    body.debt-mode .ground-texture {
+      filter: sepia(1) saturate(2) hue-rotate(-50deg);
+    }
+
+    .soil-patch {
+      width: 100px;
+      height: 100px;
+      background: #5a3e2b;
+      border: 4px solid #3d2b1f;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.2s, background 0.3s;
+    }
+    .soil-patch:hover { transform: scale(1.05); }
+    .soil-watered { background: #3d2b1f; border-color: #1a1a1a; }
+
+    .floral-panel {
+      background: #fff9f0;
+      border: 6px solid #5a3e2b;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .ribbon-header {
+      background: #ff8fb1;
+      color: white;
+      padding: 4px 16px;
+      border: 4px solid #5a3e2b;
+      font-family: 'Press Start 2P', cursive;
+      transform: rotate(-1deg);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+    }
+
+    .pixel-button {
+      font-family: 'Press Start 2P', cursive;
+      transition: all 0.1s;
+    }
+    .pixel-button:active { transform: translate(4px, 4px); box-shadow: none !important; }
+
+    .rain-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: url('https://www.transparenttextures.com/patterns/pinstripe-dark.png');
+      opacity: 0.3;
+      animation: rain 0.2s linear infinite;
+      z-index: 5;
+    }
+    @keyframes rain {
+      from { background-position: 0 0; }
+      to { background-position: 0 100px; }
+    }
+
+    .petal {
+      position: absolute;
+      top: -10%;
+      user-select: none;
+      pointer-events: none;
+      z-index: 15;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    .pixel-text-shadow {
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    }
+
+    .chat-bubble {
+      padding: 8px 12px;
+      border: 2px solid #5a3e2b;
+      border-radius: 8px;
+      max-width: 85%;
+      font-size: 11px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #5a3e2b; border-radius: 3px; }
+
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1) rotate(0); opacity: 0; }
+      50% { transform: scale(1.5) rotate(45deg); opacity: 1; }
+    }
+    .sparkle { animation: sparkle 1s ease-in-out infinite; }
+
+    .mayor-walk {
+      position: absolute;
+      bottom: 25%;
+      font-size: 5rem;
+      z-index: 60;
+      pointer-events: none;
+      transition: left 0.1s linear;
+    }
+    
+    .shake-debt {
+      animation: shake 0.5s infinite;
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+<body class="sky-sunny">
+  <div class="debt-overlay"></div>
+  <div id="root"></div>
+</body>
+</html>
